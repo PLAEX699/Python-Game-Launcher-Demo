@@ -1,0 +1,85 @@
+import os
+import ctypes
+
+def resize_console(columns=70, rows=35):
+    os.system(f"mode con: cols={columns} lines={rows}")
+
+resize_console()
+os.system("color 0A")
+
+def launch_game(path, exe):
+    """Launch the game if path and exe exist; otherwise show placeholder message."""
+    try:
+        os.chdir(path)
+        os.startfile(exe)
+        input("\nGame launched. Press Enter to return...")
+    except FileNotFoundError:
+        print(f"\n[Placeholder] Replace with your own path and executable: {path}\\{exe}")
+        input("Press Enter to continue...")
+
+def angry_birds_menu():
+    while True:
+        os.system("cls")
+        print("==== Angry Birds Collection ====")
+        print("1. Angry Birds Classic")      # Real game
+        print("2. [Your Game Here]")        # Ghost slot
+        print("3. [Your Game Here]")        # Ghost slot
+        print("4. [Your Game Here]")        # Ghost slot
+        print("0. Back")
+        choice = input("Select a game: ")
+
+        if choice == "0":
+            break
+        elif choice == "1":
+            launch_game(r"G:\Games\Angry Birds Collection\Angry Birds Classic", "AngryBirds.exe")
+        elif choice in ["2", "3", "4"]:
+            launch_game(r"[Your Path Here]", "[YourExeHere.exe]")
+
+def dash_menu():
+    games = [
+        ("Avenue Flo", "Avenue Flo.exe"),    # Real game
+        ("[Your Game Here]", "[YourExeHere.exe]"),  # Ghost slot
+        ("[Your Game Here]", "[YourExeHere.exe]"),  # Ghost slot
+        ("[Your Game Here]", "[YourExeHere.exe]")   # Ghost slot
+    ]
+
+    page_size = 30
+    page = 0
+
+    while True:
+        os.system("cls")
+        print("==== Dash Series Collection ====")
+        start = page * page_size
+        end = min(start + page_size, len(games))
+        for i, (name, _) in enumerate(games[start:end], start=start + 1):
+            print(f"{i}. {name}")
+        print("0. Back")
+        choice = input("Select a game: ").strip()
+
+        if choice == "0":
+            break
+        elif choice.isdigit():
+            index = int(choice)
+            if 1 <= index <= len(games):
+                folder, exe = games[index - 1]
+                launch_game(f"G:\\Games\\Dash Series Collection\\{folder}", exe)
+
+def main_menu():
+    while True:
+        os.system("cls")
+        print("==== Collections ====")
+        print("1. Angry Birds Collection")
+        print("2. Dash Series Collection")
+        print("0. Exit")
+        choice = input("Select a collection: ")
+
+        if choice == "0":
+            print("Goodbye!")
+            break
+        elif choice == "1":
+            angry_birds_menu()
+        elif choice == "2":
+            dash_menu()
+
+if __name__ == "__main__":
+    main_menu()
